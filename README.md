@@ -1,4 +1,4 @@
-# Tip Calculator csharp
+# Tip Calculator C#
 
 Build Information 
 
