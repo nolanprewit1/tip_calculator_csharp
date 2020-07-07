@@ -5,7 +5,7 @@ namespace tip_calculator_csharp
 {
     class Program
     {
-        public static void GetBillInformation(Bill bill)
+        static void GetBillInformation(Bill bill)
         {
             while (true)
             {
@@ -62,15 +62,16 @@ namespace tip_calculator_csharp
             }            
         }
 
-        public static void CalculateBill(Bill bill)
+         static void CalculateBill(Bill bill)
         {
+            // Run calculations for bill and tip totals, rounding to 2 decimal places
             bill.CheckTip = (float) Math.Round((bill.CheckAmount / 100) * bill.TipPercentage, 2);
             bill.CheckTotal = (float) Math.Round(bill.CheckAmount + bill.CheckTip, 2);
             bill.TipPerPerson = (float) Math.Round(bill.CheckTip / bill.NumerOfPeople, 2);
             bill.TotalPerPerson = (float) Math.Round(bill.CheckTotal / bill.NumerOfPeople, 2);
         }
 
-        public static void DisplayBillInformation(Bill bill)
+         static void DisplayBillInformation(Bill bill)
         {
             Console.Clear();
             Console.WriteLine("");
@@ -88,7 +89,7 @@ namespace tip_calculator_csharp
         {
             // Create new bill oject
             var bill = new Bill();
-
+           
             while (true)
             {
                 Console.WriteLine("Welcome to Tip Calculator C#");
