@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 
 namespace tip_calculator_csharp
@@ -19,59 +20,72 @@ namespace tip_calculator_csharp
         }
         public static void GetBillInformation(Bill bill)
         {
-            Console.Write("Number of people to split the check by: ");
-            try
+            while (true)
             {
-                bill.NumerOfPeople = int.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("Please enter a number...");
-                Console.WriteLine("Press any key to restart...");
-                Console.ReadLine();
-                Console.Clear();
-                return;
-            }
-
-            Console.Write("Check Amount: ");
-            try
-            {
-                bill.CheckAmount = float.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("Please enter a valide check amount...");
-                Console.WriteLine("Press any key to restart...");
-                Console.ReadLine();
-                Console.Clear();
-                return;
+                Console.Write("Number of people to split the check by: ");
+                try
+                {
+                    bill.NumerOfPeople = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter a number...");
+                    Console.WriteLine("Press any key to restart...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    continue;
+                }
+                break;
             }
 
-            Console.Write("Tip %: ");
-            try
+            while (true)
             {
-                bill.TipPercentage = int.Parse(Console.ReadLine());
+                Console.Write("Check Amount $: ");
+                try
+                {
+                    bill.CheckAmount = float.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter a valide check amount...");
+                    Console.WriteLine("Press any key to restart...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    continue;
+                }
+                break;
             }
-            catch
+
+            while (true) 
             {
-                Console.WriteLine("Please enter a tip percentage...");
-                Console.WriteLine("Press any key to restart...");
-                Console.ReadLine();
-                Console.Clear();
-                return;
-            }
+                Console.Write("Tip %: ");
+                try
+                {
+                    bill.TipPercentage = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter a tip percentage...");
+                    Console.WriteLine("Press any key to restart...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    continue;
+                }
+                break;
+            }            
         }
 
         public static void CalculateBill(Bill bill)
         {
-            bill.CheckTip = (bill.CheckAmount / 100) * bill.TipPercentage;
-            bill.CheckTotal = bill.CheckAmount + bill.CheckTip;
-            bill.TipPerPerson = bill.CheckTip / bill.NumerOfPeople;
-            bill.TotalPerPerson = bill.CheckTotal / bill.NumerOfPeople;
+            bill.CheckTip = (float) Math.Round((bill.CheckAmount / 100) * bill.TipPercentage, 2);
+            bill.CheckTotal = (float) Math.Round(bill.CheckAmount + bill.CheckTip, 2);
+            bill.TipPerPerson = (float) Math.Round(bill.CheckTip / bill.NumerOfPeople, 2);
+            bill.TotalPerPerson = (float) Math.Round(bill.CheckTotal / bill.NumerOfPeople, 2);
         }
 
         public static void DisplayBillInformation(Bill bill)
         {
+            Console.Clear();
             Console.WriteLine("");
             Console.WriteLine("#### CALCULATED TOTALS ####");
             Console.Write("Check total: \t\t\t $");
@@ -96,6 +110,22 @@ namespace tip_calculator_csharp
                 GetBillInformation(bill);
                 CalculateBill(bill);
                 DisplayBillInformation(bill);
+
+                Console.WriteLine("");
+                Console.WriteLine("Would you like to calculate another bill? (y/n): ");
+                var choice = (Console.ReadLine()).ToUpper();
+                if (choice == "Y")
+                {
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Closing application...");
+                    Thread.Sleep(3000);
+                    System.Environment.Exit(1);
+                }
             }
         }
     }
