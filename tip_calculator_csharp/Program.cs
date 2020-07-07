@@ -1,23 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using System.Threading.Tasks.Dataflow;
 
 namespace tip_calculator_csharp
 {
     class Program
     {
-        public class Bill
-        {
-            public int NumerOfPeople { get; set; }
-            public float CheckAmount { get; set; }
-            public int TipPercentage { get; set; }
-            public float CheckTip { get; set; }
-            public float CheckTotal { get; set; }             
-            public float TipPerPerson { get; set; }
-            public float TotalPerPerson { get; set; }
-        }
         public static void GetBillInformation(Bill bill)
         {
             while (true)
